@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#17211e">
-  <title>街区争霸 | 1.0 对照与失联街区优化方向</title>
+  <title>失联街区 | 完整活动流程体验复盘与优化建议</title>
   <style>
     :root {
       color-scheme: light;
@@ -117,6 +117,7 @@
     .flow-step small { color: #dfa760; font: 9px var(--mono); letter-spacing: .1em; }
     .flow-step h3 { margin: 7px 0 5px; font: 600 15px var(--serif); }
     .flow-step p { margin: 0; color: #bac4b9; font-size: 11px; }
+    .flow-step:nth-child(4n + 1) { padding-left: 0; border-left: 0; }
     .roadmap { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
     .priority { min-height: 190px; padding: 20px; background: var(--paper-light); }
     .priority-tag { display: inline-block; margin-bottom: 11px; color: var(--amber); font: 10px var(--mono); letter-spacing: .12em; }
@@ -168,8 +169,8 @@
       .flow-grid { grid-template-columns: 1fr 1fr; }
       .flow-step { padding: 13px 10px 13px 0; }
       .flow-step + .flow-step { padding-left: 10px; }
-      .flow-step:nth-child(3) { padding-left: 0; border-left: 0; border-top: 1px solid rgba(231,231,211,.16); }
-      .flow-step:nth-child(4) { border-top: 1px solid rgba(231,231,211,.16); }
+      .flow-step:nth-child(2n + 1) { padding-left: 0; border-left: 0; }
+      .flow-step:nth-child(n + 3) { border-top: 1px solid rgba(231,231,211,.16); }
       .roadmap { grid-template-columns: 1fr; }
       .priority { min-height: auto; padding: 16px; }
       .mobile-direction { grid-template-columns: 1fr; gap: 14px; }
@@ -200,16 +201,16 @@
 
   <section class="hero" aria-labelledby="page-title">
     <div class="hero-inner">
-      <p class="eyebrow">从规则复刻到体验升级</p>
-      <h1 id="page-title">街区争霸<br>1.0 对照与优化方向</h1>
-      <p class="hero-deck">最新 Demo 已经建立起街区氛围与遭遇叙事。下一步不是继续给卡片加装饰，而是让玩家的处理<strong>真实改变状态、获得结果，并能在手机上顺手完成。</strong></p>
+      <p class="eyebrow">完整活动流程体验复盘</p>
+      <h1 id="page-title">失联街区<br>活动流程与体验建议</h1>
+      <p class="hero-deck">原街区场景与骰盘现已承载报名、匹配、主街/秘巷探索、载具成长、补给与通行证、联盟协作及结束展示的阶段审核。评审可<strong>直接切换阶段</strong>，探索仍使用原骰子与事件主循环。</p>
       <div class="hero-rail" aria-label="事件体验目标流程">
-        <div class="rail-stop"><b>01 / SIGNAL</b>发现线索</div>
-        <div class="rail-stop"><b>02 / ENCOUNTER</b>进入遭遇</div>
-        <div class="rail-stop"><b>03 / ACTION</b>选择处理</div>
-        <div class="rail-stop"><b>04 / RESULT</b>结算可见</div>
+        <div class="rail-stop"><b>01 / SIGN-UP</b>报名与资格</div>
+        <div class="rail-stop"><b>02 / MATCH</b>匹配与进入</div>
+        <div class="rail-stop"><b>03 / EXPLORE</b>街区与联盟行动</div>
+        <div class="rail-stop"><b>04 / SETTLE</b>结束展示与结算</div>
       </div>
-      <p class="hero-note">策划判断：当前版本是沉浸式表现原型，尚未构成《街区争霸》完整的玩法升级版。</p>
+      <p class="hero-note">策划判断：阶段与操作路径已可在原 Demo 中审核；报名资格、匹配、支付、正式资源账本和最终发奖仍为本地演示或待接服务。</p>
     </div>
   </section>
 
@@ -231,13 +232,13 @@
     <section id="verdict" aria-labelledby="verdict-title">
       <div class="section-head">
         <span class="section-index">判断</span>
-        <div><h2 id="verdict-title">表现升级已见，玩法闭环待补</h2><p class="section-intro">对照基线后，最新 Demo 的价值主要在场景演绎和过程反馈；活动阶段、联盟经济、事件奖励与正式结算仍有明显缺口。</p></div>
+        <div><h2 id="verdict-title">活动流程可审，正式结算边界清楚</h2><p class="section-intro">原场景、骰盘与事件保持为核心；新增阶段审核面板承载全活动路径。页面状态可以演示，不等于服务端资格、经济账本或正式奖励已经接通。</p></div>
       </div>
       <div class="verdict">
         <span class="verdict-bar" aria-hidden="true"></span>
         <div class="verdict-copy">
-          <strong>推荐定位：用“失联街区”重做活动体验，不要只给大富翁地图换皮。</strong>
-          <p>保留 1.0 的联盟大富翁核心循环和有明确依据的事件规则；以街区线索、遭遇处理、联盟协作、可见结算和手游 HUD 重组玩家体验。Demo 临时数值必须与正式 1.0 配置分开标示。</p>
+          <strong>推荐定位：保留原街区探索主循环，用阶段面板审核完整活动，而不是另起一套 Demo。</strong>
+          <p>骰子移动、事件、图腾、警戒、昼夜、固定秘巷入口与六格奖励继续使用原实现；报名至结算通过本地阶段面板展示并可直切。演示数值、状态与正式 1.0 配置及服务端结算明确分开。</p>
         </div>
       </div>
       <div class="baseline-strip" aria-label="大富翁 1.0 活动基线">
@@ -262,7 +263,7 @@
         <article class="compare-col">
           <div class="compare-label">最新 Demo</div>
           <h3>街区场景与落点体验</h3>
-          <p>72 格环线、五类轮换事件、第三人称街区、近距离线索、10 张场景插画、警戒氛围、秘巷导航和超级掷骰逐骰记录。</p>
+          <p>原有 72 格环线、五类轮换事件、第三人称街区、线索、警戒、昼夜、秘巷导航和超级掷骰；新增完整活动阶段审核面板，可直切八个阶段。</p>
         </article>
         <article class="compare-col">
           <div class="compare-label">策划判断</div>
@@ -274,12 +275,12 @@
         <article class="compare-col">
           <div class="compare-label">已有可用基础</div>
           <h3>场景和过程反馈</h3>
-          <p>事件线索预览、场景插画、近距提示、超级掷骰暂停/记录、秘巷奖励格与势力值变化都已有对应实现。</p>
+          <p>活动报名/匹配本地状态、探索、秘巷、六次入口落点解锁载具、通行证进度预览、联盟入口及结束展示现可评审；原有事件线索、秘巷奖励格和势力反馈保留。</p>
         </article>
         <article class="compare-col">
           <div class="compare-label">尚未接入</div>
           <h3>活动经济和联盟目标</h3>
-          <p>没有完整个人/联盟资金账本、奖励库存、阶段奖励领取、商人购买、黑帮协助结算、活动报名匹配和最终排行榜奖励。</p>
+          <p>阶段面板中的报名、匹配、商品、通行证奖励状态与结算为本地演示；没有正式支付、资源到账、联盟资金账本、成员协助服务、战区匹配或排行榜发奖。</p>
         </article>
         <article class="compare-col">
           <div class="compare-label">需单独验证</div>
@@ -298,23 +299,24 @@
       <h3 style="margin:0 0 11px;font-size:14px">围绕《街区争霸》主循环的具体升级</h3>
       <div class="upgrade-grid">
         <article class="upgrade-card"><header><h3>从落点播报变成遭遇叙事</h3><span class="feature-mark">已实现</span></header><p>五类事件各有两种场景变体，共 10 张遭遇卡；每张含地点插画、可观察线索和情境文案。靠近事件时先给方向/距离提示，真正落点后再进入对应处理。</p></article>
-        <article class="upgrade-card"><header><h3>让行进路线更可读</h3><span class="feature-mark">已实现</span></header><p>72 格环线提供当前位置与动态前方导航：徒步显示 6 格，载具显示 12 格；近处事件与秘巷信号、落点标记帮助玩家在掷骰前理解移动目标。载具远距部分只呈现道路轮廓和模糊信号，不提前揭示事件详情。</p></article>
-        <article class="upgrade-card"><header><h3>徒步探索成长为侦察车</h3><span class="feature-mark">演示新增</span></header><p>徒步视野为前方 6 格；在秘巷骰子实际停留时，除领取原有落点奖励外再累计 1 件载具零件，跨多次进入保留。经过格及超出出口不计零件；集齐 6 件自动合成侦察车，场景切换为车辆跟拍，主路视野扩展至 12 格。事件线索仍只在近处揭示，秘巷骰点与奖励规则不变。</p></article>
+        <article class="upgrade-card"><header><h3>让行进路线更可读</h3><span class="feature-mark">已实现</span></header><p>72 格环线提供当前位置与动态前方导航：徒步行动预览保持 6 格，载具保持 12 格。低能见度让近处路线清晰、远处道路与信号呈模糊轮廓；普通事件详情仍只在前方 3 步内揭示，不缩短行动预览范围。</p></article>
+        <article class="upgrade-card"><header><h3>六次入口落点免费解锁侦察车</h3><span class="feature-mark">规则已确认</span></header><p>固定入口 A/B 的最终落点跨次累计；最终落在入口格计 1 次，经过不计，入口骰照常消耗并自动进入秘巷。累计 6 次后免费解锁侦察车；秘巷六格仍只按原骰子最终落点领取奖励，不再收集载具零件。车辆跟拍与主街 12 格视野保留。</p></article>
         <article class="upgrade-card"><header><h3>超级掷骰过程可追踪、可中断</h3><span class="feature-mark">已实现</span></header><p>达到 500 银骰门槛后可批量逐骰移动；每骰记录点数、起终点和触发结果，事件落点暂停处理，玩家可继续或停止，并看到已用、剩余和总步数。</p></article>
         <article class="upgrade-card"><header><h3>把联盟对抗演示成策略选择</h3><span class="feature-mark">交互演示</span></header><p>资金争夺加入 3 个对手、侦察提示、3 种进攻策略、攻防克制与胜负反馈；胜方再选资金或钥匙。当前只演示策略和目标选择，不实际改写联盟资产。</p></article>
         <article class="upgrade-card"><header><h3>图腾争夺有即时世界反馈</h3><span class="feature-mark">体验强化</span></header><p>地图同步显示图腾归属；经过与落点分别反馈势力增量，落点时呈现中立占领、夺旗成功或守方保留。图腾/势力本身在 1.0 资料中已有，不把它冒充全新玩法。</p></article>
-        <article class="upgrade-card"><header><h3>活动进度驱动环境变化</h3><span class="feature-mark">氛围层</span></header><p>街区按行进圈数经历低能见度、异动、警报、尸潮压境四阶段；昼夜随行进变化，并提供阶段提示音开关。明确不改变骰点、事件概率或奖励。</p></article>
+        <article class="upgrade-card"><header><h3>活动进度驱动环境变化</h3><span class="feature-mark">氛围层</span></header><p>街区按行进圈数经历低能见度、异动、警报、尸潮压境四阶段；低能见度模糊远景与远距标记，徒步 6 格 / 载具 12 格行动预览保持不变。昼夜随行进变化，并提供阶段提示音开关；环境表现不改变骰点、事件概率或奖励。</p></article>
+        <article class="upgrade-card"><header><h3>从单局进入完整活动周期</h3><span class="feature-mark">阶段可审核</span></header><p>原街景上提供报名资格、匹配进入、主街探索、秘巷、载具、补给/通行证、联盟协作/前哨与结束展示八阶段。阶段可直接切换评审；报名、商品、奖励与结算状态仅保存在本地。</p></article>
       </div>
 
       <h3 style="margin:25px 0 11px;font-size:14px">联盟争霸之外：新增/扩展的体验层</h3>
       <div class="extra-grid">
-        <article class="extra-card"><header><h3>街区探索支线：找信号、进秘巷</h3><span class="status done">可体验</span></header><p>秘巷入口成为环线中的探索目标：两处入口、局部六格路线、预先展示且不重复的奖励分配、专属方向导航；只领取骰子最终停留格，驶过的格子不领奖。秘巷落点同时推进载具零件收集，帮助徒步探索逐步成长为侦察车；这项成长是本 Demo 的新增扩展，不改变 1.0 的秘巷骰点与奖励规则。</p></article>
+        <article class="extra-card"><header><h3>街区探索支线：固定入口与秘巷</h3><span class="status done">可体验</span></header><p>沿用两处固定入口、自动进入、局部六格路线、预先分配且不重复的奖励和方向导航。最终落在入口格累计一次；骰子正常消耗，经过入口不计。累计六次免费解锁载具。秘巷只按骰子最终停留格领取奖励，经过格不领奖；载具进度不再由秘巷格落点推进。</p></article>
         <article class="extra-card"><header><h3>末世街区叙事与路线氛围</h3><span class="status done">可体验</span></header><p>废弃诊所、封锁仓库、无线电交易、路障、幸存者投送点、中继器和前哨等地点，把原事件包装成可识别的街区情境；昼夜、远景异动与警戒层级形成探索过程感。它是新增体验表达，不是新的经济规则。</p></article>
-        <article class="extra-card placeholder"><header><h3>活动外围入口：通行证、礼包与奖励</h3><span class="status neutral">多数仅有入口</span></header><p>界面新增“街区探秘通行证”“骰子礼包”“联盟势力奖励”等入口，点击只显示入口演示提示，没有完整商店、购买、任务进度或奖励领取逻辑。 “资金掠夺”会打开攻防策略演示，但仍不改真实资金/钥匙；神秘商人也只有完成/跳过的演示交互。</p></article>
+        <article class="extra-card placeholder"><header><h3>活动外围入口：补给、通行证与奖励</h3><span class="status partial">流程预览</span></header><p>阶段审核可查看补给方案、模拟开通通行证，并按本地探索次数显示 3/6/10 次行动档位和领取状态；这些操作不会支付或发放正式资源。骰子礼包、联盟势力奖励和神秘商人仍为入口/处理演示，不改真实库存或联盟资产。</p></article>
         <article class="extra-card placeholder"><header><h3>联盟协作与社交入口</h3><span class="status neutral">仅有入口</span></header><p>求助/可领取奖励提醒和联盟频道已进入 HUD；点击后展示演示说明或提示，不执行真实聊天、成员求助、协助结算或奖励领取。当前还不是可玩的联盟社交系统。</p></article>
         <article class="extra-card placeholder"><header><h3>积分、排名与增益展示</h3><span class="status neutral">演示数据</span></header><p>HUD 展示街区行动积分、联盟名次和“极速前进”等增益，但当前是样例/展示状态，没有与行动积分累计、排行榜计算或增益效果完整联动。</p></article>
       </div>
-      <p class="scope-note"><strong>边界：</strong>真正可归纳为“相对 1.0 的体验新增”的重点，是遭遇叙事卡、线索式导航、逐圈警戒/昼夜环境，以及把攻防操作做成可交互演示。秘巷、图腾、骰子和联盟奖励目标属于原活动骨架中的规则或概念，本 Demo 主要做可视化与流程强化；外围社交/商业入口则仍是占位。</p>
+      <p class="scope-note"><strong>边界：</strong>阶段审核与本地状态属于原 Demo 的体验补全，不代表正式报名/匹配、商业系统、联盟协作或结算服务已经实现。骰盘与秘巷奖励沿用原行为；六次入口落点免费领车是本次明确的 Demo 规则。</p>
     </section>
 
     <section id="events" class="block" aria-labelledby="events-title">
@@ -350,8 +352,8 @@
         </article>
         <article class="event-row">
           <div class="event-name">秘巷<small>SECRET ALLEY</small></div>
-          <div class="event-copy"><p><b>1.0：</b>两个入口、六格奖励和奖励概率说明。</p><p><b>最新：</b>已做信号提示、六格随机分配、局部导航及落点反馈；落入口改为自动进入，且没有通用物品库存。</p><p><b>优化：</b>先确认自动进入还是玩家选择；再确保奖励实际入账，并记录超出、领取和未领取格处理。</p></div>
-          <div class="event-state"><span class="status partial">流程部分完成</span></div>
+          <div class="event-copy"><p><b>原规则：</b>固定入口、自动进入与六格奖励仍沿用原骰子路线和落点结算。</p><p><b>当前 Demo：</b>入口 A/B 的最终落点跨次累计；入口骰照常消耗并自动进入，经过入口不计。累计六次免费解锁侦察车。秘巷六格奖励仍按最终落点领取，经过格不领奖。</p><p><b>优化建议：</b>正式接入时确认入口格配置与活动重置周期；在奖励账本中分别记录入口里程碑、载具领取和秘巷奖励，避免混算。</p></div>
+          <div class="event-state"><span class="status done">规则已确认</span></div>
         </article>
         <article class="event-row">
           <div class="event-name">图腾 / 势力<small>TOTEM & POWER</small></div>
@@ -364,28 +366,33 @@
     <section id="activity-loop" class="block flow-section" aria-labelledby="loop-title">
       <div class="section-head">
         <span class="section-index">周期</span>
-        <div><h2 id="loop-title">把单局 Demo 接回六日活动</h2><p class="section-intro">以下是 1.0 已定义的活动结构；最新 Demo 尚未呈现这些阶段。</p></div>
+        <div><h2 id="loop-title">从报名到结束展示的完整活动周期</h2><p class="section-intro">原街景 Demo 现以阶段面板覆盖六日活动及其探索子阶段；评审可直接切换，不需要重复完成前置流程。</p></div>
       </div>
       <div class="flow-grid">
-        <article class="flow-step"><small>DAY 01</small><h3>报名</h3><p>校验个人与联盟资格，确认联盟参赛名单。</p></article>
-        <article class="flow-step"><small>DAY 02</small><h3>匹配</h3><p>按服务器阶段和联盟条件分区匹配，展示战区结果。</p></article>
-        <article class="flow-step"><small>DAY 03–05</small><h3>街区行动</h3><p>掷骰、触发格子事件、积累个人与联盟目标；支持自动投掷和联盟协作。</p></article>
-        <article class="flow-step"><small>DAY 06</small><h3>展示结算</h3><p>结算个人/联盟排行、阶段奖励与可分配奖励，回收活动期未用骰子。</p></article>
+        <article class="flow-step"><small>DAY 01</small><h3>报名与资格</h3><p>查看资格、报名权限、联盟名单与战区信息；按钮只更新本地演示状态。</p></article>
+        <article class="flow-step"><small>DAY 02</small><h3>匹配与进入</h3><p>预览匹配等待与战区结果，再进入废弃街区；不调用真实匹配服务。</p></article>
+        <article class="flow-step"><small>DAY 03–05</small><h3>主街探索</h3><p>保留原骰盘、遭遇、图腾、昼夜、警戒与逐骰超级掷骰流程。</p></article>
+        <article class="flow-step"><small>EXPLORATION</small><h3>秘巷探索</h3><p>固定入口最终落点才计次并自动进入；六格奖励仍按最终落点领取。</p></article>
+        <article class="flow-step"><small>MILESTONE</small><h3>载具解锁</h3><p>主街固定入口累计落点六次后免费解锁，视野扩至 12 格；不收集零件。</p></article>
+        <article class="flow-step"><small>ACTIVITY HUB</small><h3>补给与通行证</h3><p>展示补给入口、行动档位和补领逻辑；不支付、不模拟正式资源到账。</p></article>
+        <article class="flow-step"><small>ALLIANCE</small><h3>协作与前哨</h3><p>串联图腾势力、求助入口、联盟对抗与阶段目标；服务端协作未接入。</p></article>
+        <article class="flow-step"><small>DAY 06</small><h3>结束展示与结算</h3><p>预览个人/联盟结果、奖励状态与回收边界；不清空页面或模拟正式发奖。</p></article>
       </div>
+      <p class="hero-note">阶段审核中的资格、战区、排名和结算数据均为样例。Demo 不代表正式服务端状态。</p>
     </section>
 
     <section id="mobile" class="block" aria-labelledby="mobile-title">
       <div class="section-head">
         <span class="section-index">HUD</span>
-        <div><h2 id="mobile-title">从“桌面浮窗”转向手游操作层级</h2><p class="section-intro">当前已解决秘巷中的局部遮挡，但整体界面还需要以手机屏幕和拇指触达为出发点重排。</p></div>
+        <div><h2 id="mobile-title">阶段面板适配横屏审核与原 HUD</h2><p class="section-intro">阶段审核面板在窄屏转为横向阶段导航与独立滚动内容，不替换原街景和骰子操作区；秘巷状态继续使用现有避遮挡布局。</p></div>
       </div>
       <div class="mobile-direction">
-        <div><h3>视觉目标已明确，布局方案待审核</h3><p>不要把现有悬浮网页面板等比缩小。地图、行动骰、资源、事件结果应有明确主次；场景在行动时仍要可读，重要操作不应散落在屏幕四角。</p></div>
+        <div><h3>保持原场景，审核层单独展开</h3><p>阶段面板不覆盖或替换原活动 HUD 信息架构。正式手游化仍需按设备安全区与触控尺寸做专项验证，不能仅以桌面浏览器适配结果代替真机验收。</p></div>
         <ul class="mobile-list">
-          <li>顶部优先呈现关键资源和活动进度，压缩静态说明与重复标签。</li>
-          <li>骰子与主要行动放入拇指易达区域，并明确银骰、金骰和超级投掷的成本/状态。</li>
-          <li>事件处理采用移动端层级，完成选择后立即显示奖励、损失、增益或联盟状态变化。</li>
-          <li>秘巷详情按状态展开，确保奖励格、当前落点和行动控件不互相遮挡。</li>
+          <li>八阶段可直接切换；报名和匹配演示状态在面板内即时更新。</li>
+          <li>主街骰子与事件仍走原 HUD；阶段审核不修改骰点或触发概率。</li>
+          <li>探索行动次数联动本地通行证档位；演示领取有状态反馈，不伪装正式资源入账。</li>
+          <li>载具进度只读取固定入口最终落点累计；秘巷奖励格仍按原规则显示与领取。</li>
         </ul>
       </div>
     </section>
@@ -396,8 +403,8 @@
         <div><h2 id="priorities-title">建议实施顺序</h2><p class="section-intro">先把规则和账本做真，再叠加体验表现；否则动画会包装一个无法验证的结果。</p></div>
       </div>
       <div class="roadmap">
-        <article class="priority"><span class="priority-tag">P0 · 规则闭环</span><h3>先确定哪些 1.0 规则必须保留</h3><p>统一事件映射、秘巷入口、骰子成本和奖励来源。补上 Demo 事件结算、资源账本与结果记录，并明确标注 Demo 临时规则。</p></article>
-        <article class="priority"><span class="priority-tag">P1 · 联盟活动</span><h3>接回个人与联盟目标</h3><p>实现联盟资金、势力阶段、协助请求、成员贡献、排行与阶段奖励；将活动报名、匹配和展示结算纳入完整周期。</p></article>
+        <article class="priority"><span class="priority-tag">P0 · 规则闭环</span><h3>冻结入口里程碑与骰子结算口径</h3><p>确认固定入口格数据、跨 A/B 累计方式及活动重置边界；保持入口骰照常消耗，秘巷奖励仍只按最终落点领取。将本地审核状态与正式配置清楚隔离。</p></article>
+        <article class="priority"><span class="priority-tag">P1 · 联盟活动</span><h3>接入正式报名、匹配和账本</h3><p>将阶段面板样例替换为服务端资格、战区、成员贡献、资金/势力、奖励领取、排行榜与结束回收状态；加入重连和防重复提交校验。</p></article>
         <article class="priority"><span class="priority-tag">P2 · 手游体验</span><h3>重做移动端 HUD 和场景反馈</h3><p>以触屏和单手操作重排主界面及事件面板。规则闭环稳定后，再打磨卡面轮换、警戒阶段、动画和音效。</p></article>
       </div>
     </section>
@@ -410,14 +417,14 @@
       <ul class="risk-list">
         <li><b>地图分布：</b>Demo 的 13 个随机事件格和五类轮换，不等于地图 PDF 中的多类型格子配置。</li>
         <li><b>骰子经济：</b>界面写有银骰自然恢复，但 Demo 没有计时恢复；金骰也没有库存和消耗账本。</li>
-        <li><b>秘巷入口：</b>1.0 的入口交互与 Demo 的自动进入不一致，需确定采用哪套规则。</li>
+        <li><b>秘巷载具：</b>六次固定入口最终落点为已确认的 Demo 规则；正式活动需确认入口配置、累计重置周期和载具资产。</li>
         <li><b>奖励账本：</b>秘巷有领取展示和行动记录，但通用奖励物品没有统一库存状态。</li>
         <li><b>警戒阶段：</b>代码定义四种阶段，规则速览写“逐圈升至三级”，阶段数口径不一致。</li>
         <li><b>神行顺序：</b>《街区争霸地图.pdf》第 1 页记录参数 7=10 时同一时间可能出现两条数据，顺序可能颠倒；最新 Demo 尚未覆盖神行规则。</li>
       </ul>
     </section>
 
-    <div class="closing"><p>最终方向：保留 1.0 的联盟大富翁骨架，以失联街区强化探索叙事；每个落点都要有真实处理、明确结算和可追踪结果，再用手游 HUD 将它们连成一段顺手、可信的活动体验。</p></div>
+    <div class="closing"><p>最终方向：直接在原街区 Demo 中评审完整活动阶段，保留骰子主循环与秘巷奖励规则；固定入口最终落点累计六次免费领车。进入正式制作前，再把本地阶段状态替换成可追踪、可恢复、可审计的服务端流程。</p></div>
 
     <section id="sources" class="block" aria-labelledby="sources-title">
       <div class="section-head">
@@ -425,14 +432,14 @@
         <div><h2 id="sources-title">对照依据</h2><p class="section-intro">规则判断来自原始活动文档和当前 Demo；未接入正式配置的内容均按“未验证/待确认”处理。</p></div>
       </div>
       <div class="sources">
-        <article class="source"><small>基线 / 活动规则与奖励</small><a href="./大富翁1.0.docx">大富翁1.0.docx</a><p>活动简介、六日周期、报名/匹配、事件效果、联盟玩法和奖励投放截图。</p></article>
-        <article class="source"><small>基线 / 地图与参数</small><a href="./街区争霸地图.pdf">街区争霸地图.pdf</a><p>地图格子类型、格子参数、秘巷格子与已记录的数据顺序问题。</p></article>
-        <article class="source"><small>当前 / 交互原型</small><a href="./lost-district-encounter-card-demo.html">lost-district-encounter-card-demo.html</a><p>场景卡、线索、骰子、秘巷、警戒和事件处理的当前实现。</p></article>
-        <article class="source"><small>设计 / 体验规格</small><a href="./docs/superpowers/specs/2026-10-18-encounter-card-experience-design.md">遭遇卡体验与秘巷 HUD 规格</a><p>此前已批准的表现和避遮挡方向；事件闭环与手游 HUD 需据当前反馈更新。</p></article>
+        <article class="source"><small>基线 / 活动规则与奖励</small><a href="../大富翁1.0.docx">大富翁1.0.docx</a><p>活动简介、六日周期、报名/匹配、事件效果、联盟玩法和奖励投放截图。</p></article>
+        <article class="source"><small>基线 / 地图与参数</small><a href="../街区争霸地图.pdf">街区争霸地图.pdf</a><p>地图格子类型、格子参数、秘巷格子与已记录的数据顺序问题。</p></article>
+        <article class="source"><small>设计 / 活动流程</small><a href="../废城搜救活动Demo方案.docx">废城搜救活动 Demo 方案</a><p>报名、匹配、探索、载具、补给/通行证、联盟机制与结束展示的流程依据。</p></article>
+        <article class="source"><small>当前 / 原交互原型</small><a href="../lost-district-encounter-card-demo.html">lost-district-encounter-card-demo.html</a><p>原街景、骰盘主循环、事件、秘巷六格、载具入口累计与阶段审核。</p></article>
       </div>
     </section>
   </main>
 
-  <footer class="footer">DLS 活动策划对照稿 · 2026-10-18 · 预期效果不是测试结论；Demo 规则不代表正式 1.0 配置</footer>
+  <footer class="footer">失联街区完整活动流程体验复盘 · 2026-10-18 · 演示状态不代表正式服务端配置或发奖结果</footer>
 </body>
 </html>
