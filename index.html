@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17211e">
+  <title>街区争霸 | 1.0 对照与失联街区优化方向</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17211e;
+      --ink-soft: #34413b;
+      --muted: #68736c;
+      --paper: #f1f0e9;
+      --paper-light: #fbfaf5;
+      --rule: #d6d7cc;
+      --amber: #c9823d;
+      --amber-pale: #f4e8d5;
+      --mint: #496e5b;
+      --mint-pale: #e2ebe2;
+      --red: #9f4e3d;
+      --red-pale: #f1e3de;
+      --mono: "Cascadia Mono", Consolas, monospace;
+      --sans: "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", system-ui, sans-serif;
+      --serif: "STSong", "Songti SC", "Noto Serif CJK SC", serif;
+      --content: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.72 var(--sans); }
+    a { color: inherit; text-underline-offset: 3px; }
+    a:focus-visible, summary:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+    .masthead { border-bottom: 1px solid rgba(255,255,255,.15); background: var(--ink); color: var(--paper-light); }
+    .mast-inner { width: min(var(--content), calc(100% - 48px)); margin: auto; padding: 17px 0; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { display: flex; align-items: center; gap: 11px; font: 700 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+    .brand-mark { width: 25px; height: 25px; position: relative; border: 1px solid #d9954e; transform: rotate(45deg); }
+    .brand-mark::after { content: ""; position: absolute; inset: 6px; background: #d9954e; }
+    .edition { color: #a9b2a8; font: 10px var(--mono); letter-spacing: .08em; text-align: right; }
+    .hero { overflow: hidden; position: relative; background: var(--ink); color: var(--paper-light); }
+    .hero::after { content: ""; position: absolute; top: -170px; right: -80px; width: 460px; height: 460px; border: 1px solid rgba(210,151,84,.25); border-radius: 50%; box-shadow: 0 0 0 34px rgba(210,151,84,.035), 0 0 0 69px rgba(210,151,84,.025); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; width: min(var(--content), calc(100% - 48px)); margin: auto; padding: 68px 0 52px; }
+    .eyebrow { margin: 0 0 16px; color: #dba15d; font: 10px var(--mono); letter-spacing: .15em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 780px; margin-bottom: 20px; font: 600 clamp(34px, 5vw, 62px)/1.2 var(--serif); letter-spacing: .015em; }
+    .hero-deck { max-width: 720px; margin-bottom: 29px; color: #c5cdc1; font-size: 16px; line-height: 1.85; }
+    .hero-deck strong { color: #fff3dc; font-weight: 650; }
+    .hero-rail { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 760px; border-top: 1px solid rgba(231,231,211,.2); }
+    .rail-stop { min-height: 54px; position: relative; padding: 15px 12px 0 0; color: #c5cdc1; font-size: 11px; }
+    .rail-stop::before { content: ""; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; border: 1px solid #dba15d; background: var(--ink); transform: rotate(45deg); }
+    .rail-stop b { display: block; color: #f4d5a9; font: 9px var(--mono); letter-spacing: .06em; }
+    .hero-note { margin: 17px 0 0; color: #9da99e; font-size: 11px; }
+    .page-nav { background: var(--paper-light); border-bottom: 1px solid var(--rule); }
+    .nav-inner { width: min(var(--content), calc(100% - 48px)); margin: auto; display: flex; gap: 22px; overflow-x: auto; padding: 12px 0; scrollbar-width: thin; }
+    .nav-inner a { flex: 0 0 auto; color: var(--ink-soft); font-size: 11px; text-decoration: none; }
+    .nav-inner a:hover { color: var(--red); }
+    main { width: min(var(--content), calc(100% - 48px)); margin: auto; padding: 42px 0 72px; }
+    section { scroll-margin-top: 24px; }
+    .section-head { display: grid; grid-template-columns: 54px minmax(0, 1fr); gap: 13px; align-items: start; margin: 0 0 20px; }
+    .section-index { padding-top: 4px; color: var(--amber); font: 11px var(--mono); letter-spacing: .08em; }
+    h2 { margin-bottom: 6px; font: 600 clamp(23px, 3vw, 32px)/1.35 var(--serif); }
+    .section-intro { max-width: 760px; margin: 0; color: var(--muted); font-size: 13px; }
+    .verdict { display: grid; grid-template-columns: 8px minmax(0, 1fr); background: var(--paper-light); border: 1px solid var(--rule); }
+    .verdict-bar { background: var(--amber); }
+    .verdict-copy { padding: 20px 23px; }
+    .verdict-copy strong { display: block; margin-bottom: 5px; font: 650 16px/1.5 var(--sans); }
+    .verdict-copy p { margin: 0; color: var(--ink-soft); font-size: 13px; }
+    .baseline-strip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 16px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .baseline-item { padding: 13px 15px 14px 0; }
+    .baseline-item + .baseline-item { padding-left: 15px; border-left: 1px solid var(--rule); }
+    .baseline-item small { display: block; color: var(--muted); font-size: 10px; }
+    .baseline-item b { display: block; margin-top: 3px; font: 700 17px/1.4 var(--mono); }
+    .baseline-item span { color: var(--ink-soft); font-size: 10px; }
+    .block { margin-top: 48px; }
+    .compare-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+    .compare-col { padding: 17px 19px 19px 0; }
+    .compare-col + .compare-col { padding-left: 19px; border-left: 1px solid var(--rule); }
+    .compare-label { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--muted); font: 10px var(--mono); letter-spacing: .07em; text-transform: uppercase; }
+    .compare-label::before { content: ""; width: 7px; height: 7px; background: var(--amber); transform: rotate(45deg); }
+    .compare-col:nth-child(2) .compare-label::before { background: var(--mint); }
+    .compare-col:nth-child(3) .compare-label::before { background: var(--red); }
+    .compare-col h3 { margin-bottom: 8px; font-size: 15px; }
+    .compare-col p { margin-bottom: 0; color: var(--ink-soft); font-size: 12px; }
+    .upgrade-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--rule); background: var(--rule); }
+    .upgrade-card { min-height: 158px; padding: 17px; background: var(--paper-light); }
+    .upgrade-card header, .extra-card header { display: flex; align-items: flex-start; justify-content: space-between; gap: 9px; margin-bottom: 8px; }
+    .upgrade-card h3, .extra-card h3 { margin: 0; font-size: 14px; }
+    .upgrade-card p, .extra-card p { margin: 0; color: var(--ink-soft); font-size: 11px; }
+    .feature-mark { color: var(--amber); font: 9px var(--mono); letter-spacing: .08em; white-space: nowrap; }
+    .extra-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .extra-card { padding: 17px; border: 1px solid var(--rule); background: var(--paper-light); }
+    .extra-card.placeholder { border-style: dashed; background: #edede6; }
+    .extra-card .status { flex: 0 0 auto; }
+    .scope-note { margin: 14px 0 0; padding: 12px 15px; border-left: 2px solid var(--amber); background: var(--amber-pale); color: var(--ink-soft); font-size: 11px; }
+    .scope-note strong { color: var(--ink); }
+    .status { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border: 1px solid currentColor; font: 10px/1.4 var(--mono); white-space: nowrap; }
+    .status::before { content: ""; width: 5px; height: 5px; background: currentColor; border-radius: 50%; }
+    .status.done { color: var(--mint); background: var(--mint-pale); }
+    .status.partial { color: #916027; background: var(--amber-pale); }
+    .status.pending { color: var(--red); background: var(--red-pale); }
+    .status.neutral { color: #68736c; background: #e8e9e2; }
+    .event-list { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+    .event-row { display: grid; grid-template-columns: 178px minmax(0, 1fr) 105px; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+    .event-name { font: 650 14px/1.5 var(--sans); }
+    .event-name small { display: block; margin-top: 4px; color: var(--muted); font: 9px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .event-copy { color: var(--ink-soft); font-size: 12px; }
+    .event-copy p { margin: 0 0 5px; }
+    .event-copy p:last-child { margin-bottom: 0; }
+    .event-copy b { color: var(--ink); }
+    .event-state { padding-top: 2px; text-align: right; }
+    .flow-section { padding: 25px; background: var(--ink); color: var(--paper-light); }
+    .flow-section .section-head { margin-bottom: 22px; }
+    .flow-section h2 { color: var(--paper-light); }
+    .flow-section .section-intro { color: #a9b4a9; }
+    .flow-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid rgba(231,231,211,.2); }
+    .flow-step { position: relative; padding: 17px 17px 0 0; }
+    .flow-step + .flow-step { padding-left: 17px; border-left: 1px solid rgba(231,231,211,.16); }
+    .flow-step small { color: #dfa760; font: 9px var(--mono); letter-spacing: .1em; }
+    .flow-step h3 { margin: 7px 0 5px; font: 600 15px var(--serif); }
+    .flow-step p { margin: 0; color: #bac4b9; font-size: 11px; }
+    .roadmap { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+    .priority { min-height: 190px; padding: 20px; background: var(--paper-light); }
+    .priority-tag { display: inline-block; margin-bottom: 11px; color: var(--amber); font: 10px var(--mono); letter-spacing: .12em; }
+    .priority h3 { margin-bottom: 8px; font-size: 15px; }
+    .priority p { margin: 0; color: var(--ink-soft); font-size: 12px; }
+    .mobile-direction { display: grid; grid-template-columns: 1fr 1.25fr; gap: 25px; padding: 22px 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+    .mobile-direction h3 { margin-bottom: 8px; font: 600 19px var(--serif); }
+    .mobile-direction p { margin: 0; color: var(--ink-soft); font-size: 12px; }
+    .mobile-list { margin: 0; padding: 0; list-style: none; }
+    .mobile-list li { position: relative; padding: 0 0 8px 18px; color: var(--ink-soft); font-size: 12px; }
+    .mobile-list li::before { content: ""; position: absolute; top: 8px; left: 2px; width: 6px; height: 6px; border: 1px solid var(--amber); transform: rotate(45deg); }
+    .risk-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 24px; margin: 0; padding: 0; list-style: none; }
+    .risk-list li { padding: 11px 0; border-bottom: 1px solid var(--rule); color: var(--ink-soft); font-size: 12px; }
+    .risk-list b { color: var(--ink); }
+    .sources { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .source { padding: 15px 17px; border: 1px solid var(--rule); background: var(--paper-light); }
+    .source small { display: block; margin-bottom: 5px; color: var(--muted); font: 9px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .source a { font-size: 12px; font-weight: 650; }
+    .source p { margin: 5px 0 0; color: var(--muted); font-size: 10px; }
+    .closing { margin-top: 48px; padding: 25px 28px; border-left: 3px solid var(--amber); background: var(--amber-pale); }
+    .closing p { margin: 0; font: 600 17px/1.8 var(--serif); }
+    .footer { padding: 20px 24px 32px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 10px; text-align: center; }
+    @media (max-width: 760px) {
+      .mast-inner, .hero-inner, .nav-inner, main { width: min(100% - 32px, var(--content)); }
+      .mast-inner { align-items: flex-start; }
+      .edition { max-width: 150px; line-height: 1.5; }
+      .hero-inner { padding: 48px 0 36px; }
+      .hero::after { top: -95px; right: -240px; width: 380px; height: 380px; }
+      .hero-deck { font-size: 14px; }
+      .hero-rail { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 8px; }
+      .rail-stop { padding-top: 12px; }
+      main { padding-top: 31px; }
+      .section-head { grid-template-columns: 36px minmax(0, 1fr); gap: 8px; }
+      .baseline-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .baseline-item { padding: 10px 8px 11px 0; }
+      .baseline-item + .baseline-item { padding-left: 10px; }
+      .baseline-item:nth-child(3) { padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+      .baseline-item:nth-child(4) { border-top: 1px solid var(--rule); }
+      .compare-grid { grid-template-columns: 1fr; }
+      .compare-col, .compare-col + .compare-col { padding: 15px 0; border-left: 0; }
+      .compare-col + .compare-col { border-top: 1px solid var(--rule); }
+      .upgrade-grid, .extra-grid { grid-template-columns: 1fr; }
+      .upgrade-card { min-height: auto; padding: 15px; }
+      .event-row { grid-template-columns: 1fr auto; gap: 6px 12px; padding: 15px 0; }
+      .event-name { grid-column: 1; }
+      .event-state { grid-column: 2; grid-row: 1; }
+      .event-copy { grid-column: 1 / -1; }
+      .flow-section { padding: 19px 16px; }
+      .flow-grid { grid-template-columns: 1fr 1fr; }
+      .flow-step { padding: 13px 10px 13px 0; }
+      .flow-step + .flow-step { padding-left: 10px; }
+      .flow-step:nth-child(3) { padding-left: 0; border-left: 0; border-top: 1px solid rgba(231,231,211,.16); }
+      .flow-step:nth-child(4) { border-top: 1px solid rgba(231,231,211,.16); }
+      .roadmap { grid-template-columns: 1fr; }
+      .priority { min-height: auto; padding: 16px; }
+      .mobile-direction { grid-template-columns: 1fr; gap: 14px; }
+      .risk-list, .sources { grid-template-columns: 1fr; }
+      .closing { padding: 19px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    @media print {
+      :root { --paper: #fff; --paper-light: #fff; }
+      body { background: #fff; font-size: 10pt; }
+      .masthead, .hero, .flow-section { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .page-nav { display: none; }
+      .hero-inner { padding: 35px 0; }
+      main { padding: 25px 0; }
+      .block, .event-row, .priority, .source, .closing { break-inside: avoid; }
+      a { text-decoration: none; }
+      .footer { padding-bottom: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="mast-inner">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span>DLS / 活动策划复盘</span></div>
+      <div class="edition">DESIGN REVIEW · 2026.10<br>街区争霸 / 失联街区</div>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="page-title">
+    <div class="hero-inner">
+      <p class="eyebrow">从规则复刻到体验升级</p>
+      <h1 id="page-title">街区争霸<br>1.0 对照与优化方向</h1>
+      <p class="hero-deck">最新 Demo 已经建立起街区氛围与遭遇叙事。下一步不是继续给卡片加装饰，而是让玩家的处理<strong>真实改变状态、获得结果，并能在手机上顺手完成。</strong></p>
+      <div class="hero-rail" aria-label="事件体验目标流程">
+        <div class="rail-stop"><b>01 / SIGNAL</b>发现线索</div>
+        <div class="rail-stop"><b>02 / ENCOUNTER</b>进入遭遇</div>
+        <div class="rail-stop"><b>03 / ACTION</b>选择处理</div>
+        <div class="rail-stop"><b>04 / RESULT</b>结算可见</div>
+      </div>
+      <p class="hero-note">策划判断：当前版本是沉浸式表现原型，尚未构成《街区争霸》完整的玩法升级版。</p>
+    </div>
+  </section>
+
+  <nav class="page-nav" aria-label="报告目录">
+    <div class="nav-inner">
+      <a href="#verdict">核心判断</a>
+      <a href="#comparison">版本对照</a>
+      <a href="#improvements">具体升级与新增</a>
+      <a href="#events">事件优化</a>
+      <a href="#activity-loop">活动周期</a>
+      <a href="#mobile">手游 HUD</a>
+      <a href="#priorities">实施优先级</a>
+      <a href="#risks">规则风险</a>
+      <a href="#sources">依据文件</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="verdict" aria-labelledby="verdict-title">
+      <div class="section-head">
+        <span class="section-index">判断</span>
+        <div><h2 id="verdict-title">表现升级已见，玩法闭环待补</h2><p class="section-intro">对照基线后，最新 Demo 的价值主要在场景演绎和过程反馈；活动阶段、联盟经济、事件奖励与正式结算仍有明显缺口。</p></div>
+      </div>
+      <div class="verdict">
+        <span class="verdict-bar" aria-hidden="true"></span>
+        <div class="verdict-copy">
+          <strong>推荐定位：用“失联街区”重做活动体验，不要只给大富翁地图换皮。</strong>
+          <p>保留 1.0 的联盟大富翁核心循环和有明确依据的事件规则；以街区线索、遭遇处理、联盟协作、可见结算和手游 HUD 重组玩家体验。Demo 临时数值必须与正式 1.0 配置分开标示。</p>
+        </div>
+      </div>
+      <div class="baseline-strip" aria-label="大富翁 1.0 活动基线">
+        <div class="baseline-item"><small>活动节奏</small><b>6 天</b><span>报名 1 / 匹配 1 / 活动 3 / 展示 1</span></div>
+        <div class="baseline-item"><small>活动频率</small><b>每月 1 次</b><span>有报名与战区分组</span></div>
+        <div class="baseline-item"><small>参赛目标</small><b>个人 + 联盟</b><span>个人积分、联盟资金/势力与排行</span></div>
+        <div class="baseline-item"><small>地图规则</small><b>多类格子</b><span>地图配置列出 18 类格子/事件</span></div>
+      </div>
+    </section>
+
+    <section id="comparison" class="block" aria-labelledby="comparison-title">
+      <div class="section-head">
+        <span class="section-index">对照</span>
+        <div><h2 id="comparison-title">保留什么，增强什么，缺少什么</h2><p class="section-intro">把“代码中能看到”与“规则真正结算”分开判断，避免把视觉原型误读为活动已完成。</p></div>
+      </div>
+      <div class="compare-grid">
+        <article class="compare-col">
+          <div class="compare-label">1.0 基线</div>
+          <h3>联盟大富翁完整活动</h3>
+          <p>六日活动周期、报名和匹配；多类型地图格；银骰、金骰、自动投掷；个人及联盟目标；事件奖励、联盟协助、排行与阶段结算。</p>
+        </article>
+        <article class="compare-col">
+          <div class="compare-label">最新 Demo</div>
+          <h3>街区场景与落点体验</h3>
+          <p>72 格环线、五类轮换事件、第三人称街区、近距离线索、10 张场景插画、警戒氛围、秘巷导航和超级掷骰逐骰记录。</p>
+        </article>
+        <article class="compare-col">
+          <div class="compare-label">策划判断</div>
+          <h3>表现层强于结算层</h3>
+          <p>Demo 运行时随机放置 13 个事件格并循环分配五类事件；不等同于 1.0 地图的多类格子配置。多数通用事件只显示“完成演示处理”，尚未发放或扣除资源。</p>
+        </article>
+      </div>
+      <div class="compare-grid" style="margin-top:20px">
+        <article class="compare-col">
+          <div class="compare-label">已有可用基础</div>
+          <h3>场景和过程反馈</h3>
+          <p>事件线索预览、场景插画、近距提示、超级掷骰暂停/记录、秘巷奖励格与势力值变化都已有对应实现。</p>
+        </article>
+        <article class="compare-col">
+          <div class="compare-label">尚未接入</div>
+          <h3>活动经济和联盟目标</h3>
+          <p>没有完整个人/联盟资金账本、奖励库存、阶段奖励领取、商人购买、黑帮协助结算、活动报名匹配和最终排行榜奖励。</p>
+        </article>
+        <article class="compare-col">
+          <div class="compare-label">需单独验证</div>
+          <h3>移动端操作体验</h3>
+          <p>秘巷骰子栏的遮挡处理已做；但你反馈整体 HUD 仍像网页游戏。需要重新设计手游信息层级和触控操作区，而不只是缩小面板。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="improvements" class="block" aria-labelledby="improvements-title">
+      <div class="section-head">
+        <span class="section-index">新增体验</span>
+        <div><h2 id="improvements-title">不止换皮：具体升级与额外体验</h2><p class="section-intro">下列内容按“主循环体验升级”和“联盟争夺之外的体验扩展”拆开；已实现的演示交互与仅有界面的入口分开标注。</p></div>
+      </div>
+
+      <h3 style="margin:0 0 11px;font-size:14px">围绕《街区争霸》主循环的具体升级</h3>
+      <div class="upgrade-grid">
+        <article class="upgrade-card"><header><h3>从落点播报变成遭遇叙事</h3><span class="feature-mark">已实现</span></header><p>五类事件各有两种场景变体，共 10 张遭遇卡；每张含地点插画、可观察线索和情境文案。靠近事件时先给方向/距离提示，真正落点后再进入对应处理。</p></article>
+        <article class="upgrade-card"><header><h3>让行进路线更可读</h3><span class="feature-mark">已实现</span></header><p>72 格环线提供当前位置与动态前方导航：徒步显示 6 格，载具显示 12 格；近处事件与秘巷信号、落点标记帮助玩家在掷骰前理解移动目标。载具远距部分只呈现道路轮廓和模糊信号，不提前揭示事件详情。</p></article>
+        <article class="upgrade-card"><header><h3>徒步探索成长为侦察车</h3><span class="feature-mark">演示新增</span></header><p>徒步视野为前方 6 格；在秘巷骰子实际停留时，除领取原有落点奖励外再累计 1 件载具零件，跨多次进入保留。经过格及超出出口不计零件；集齐 6 件自动合成侦察车，场景切换为车辆跟拍，主路视野扩展至 12 格。事件线索仍只在近处揭示，秘巷骰点与奖励规则不变。</p></article>
+        <article class="upgrade-card"><header><h3>超级掷骰过程可追踪、可中断</h3><span class="feature-mark">已实现</span></header><p>达到 500 银骰门槛后可批量逐骰移动；每骰记录点数、起终点和触发结果，事件落点暂停处理，玩家可继续或停止，并看到已用、剩余和总步数。</p></article>
+        <article class="upgrade-card"><header><h3>把联盟对抗演示成策略选择</h3><span class="feature-mark">交互演示</span></header><p>资金争夺加入 3 个对手、侦察提示、3 种进攻策略、攻防克制与胜负反馈；胜方再选资金或钥匙。当前只演示策略和目标选择，不实际改写联盟资产。</p></article>
+        <article class="upgrade-card"><header><h3>图腾争夺有即时世界反馈</h3><span class="feature-mark">体验强化</span></header><p>地图同步显示图腾归属；经过与落点分别反馈势力增量，落点时呈现中立占领、夺旗成功或守方保留。图腾/势力本身在 1.0 资料中已有，不把它冒充全新玩法。</p></article>
+        <article class="upgrade-card"><header><h3>活动进度驱动环境变化</h3><span class="feature-mark">氛围层</span></header><p>街区按行进圈数经历低能见度、异动、警报、尸潮压境四阶段；昼夜随行进变化，并提供阶段提示音开关。明确不改变骰点、事件概率或奖励。</p></article>
+      </div>
+
+      <h3 style="margin:25px 0 11px;font-size:14px">联盟争霸之外：新增/扩展的体验层</h3>
+      <div class="extra-grid">
+        <article class="extra-card"><header><h3>街区探索支线：找信号、进秘巷</h3><span class="status done">可体验</span></header><p>秘巷入口成为环线中的探索目标：两处入口、局部六格路线、预先展示且不重复的奖励分配、专属方向导航；只领取骰子最终停留格，驶过的格子不领奖。秘巷落点同时推进载具零件收集，帮助徒步探索逐步成长为侦察车；这项成长是本 Demo 的新增扩展，不改变 1.0 的秘巷骰点与奖励规则。</p></article>
+        <article class="extra-card"><header><h3>末世街区叙事与路线氛围</h3><span class="status done">可体验</span></header><p>废弃诊所、封锁仓库、无线电交易、路障、幸存者投送点、中继器和前哨等地点，把原事件包装成可识别的街区情境；昼夜、远景异动与警戒层级形成探索过程感。它是新增体验表达，不是新的经济规则。</p></article>
+        <article class="extra-card placeholder"><header><h3>活动外围入口：通行证、礼包与奖励</h3><span class="status neutral">多数仅有入口</span></header><p>界面新增“街区探秘通行证”“骰子礼包”“联盟势力奖励”等入口，点击只显示入口演示提示，没有完整商店、购买、任务进度或奖励领取逻辑。 “资金掠夺”会打开攻防策略演示，但仍不改真实资金/钥匙；神秘商人也只有完成/跳过的演示交互。</p></article>
+        <article class="extra-card placeholder"><header><h3>联盟协作与社交入口</h3><span class="status neutral">仅有入口</span></header><p>求助/可领取奖励提醒和联盟频道已进入 HUD；点击后展示演示说明或提示，不执行真实聊天、成员求助、协助结算或奖励领取。当前还不是可玩的联盟社交系统。</p></article>
+        <article class="extra-card placeholder"><header><h3>积分、排名与增益展示</h3><span class="status neutral">演示数据</span></header><p>HUD 展示街区行动积分、联盟名次和“极速前进”等增益，但当前是样例/展示状态，没有与行动积分累计、排行榜计算或增益效果完整联动。</p></article>
+      </div>
+      <p class="scope-note"><strong>边界：</strong>真正可归纳为“相对 1.0 的体验新增”的重点，是遭遇叙事卡、线索式导航、逐圈警戒/昼夜环境，以及把攻防操作做成可交互演示。秘巷、图腾、骰子和联盟奖励目标属于原活动骨架中的规则或概念，本 Demo 主要做可视化与流程强化；外围社交/商业入口则仍是占位。</p>
+    </section>
+
+    <section id="events" class="block" aria-labelledby="events-title">
+      <div class="section-head">
+        <span class="section-index">事件</span>
+        <div><h2 id="events-title">按 1.0 玩法补齐事件结果</h2><p class="section-intro">场景牌负责“发生了什么”；事件规则负责“玩家做什么”；结算负责“世界因此改变了什么”。三层都要落地。</p></div>
+      </div>
+      <div class="event-list">
+        <article class="event-row">
+          <div class="event-name">物资补给<small>SUPPLY CACHE</small></div>
+          <div class="event-copy"><p><b>1.0：</b>补给格有档位和奖励展示/抽取流程。</p><p><b>最新：</b>配置了三档宝箱概率，但没有格子档位映射，也没有抽取、入包和结果账本。</p><p><b>优化：</b>确定格子与宝箱档位关系；抽取后展示物品、数量与获得记录。</p></div>
+          <div class="event-state"><span class="status pending">待补结算</span></div>
+        </article>
+        <article class="event-row">
+          <div class="event-name">街头黑帮<small>GANG ENCOUNTER</small></div>
+          <div class="event-copy"><p><b>1.0：</b>可绕过或挑战；失败后可请求联盟协助，涉及个人/联盟资源及击败奖励。</p><p><b>最新：</b>场景卡和遭遇文案已做，普通事件没有挑战、绕过或求助处理。</p><p><b>优化：</b>把挑战结果、绕过损失、单个求助限制、盟友协助和奖励到账做成同一闭环。</p></div>
+          <div class="event-state"><span class="status pending">待实现</span></div>
+        </article>
+        <article class="event-row">
+          <div class="event-name">联盟赠礼<small>ALLIANCE GIFT</small></div>
+          <div class="event-copy"><p><b>1.0：</b>神秘商人礼包购买后，全联盟成员可获得银骰，并记录玩家信息/贡献。</p><p><b>最新：</b>打开商人入口，但明确不模拟购买或资源发放。</p><p><b>优化：</b>接入 Demo 商店或可测试的免费交易规则；显示个人操作与全盟到账记录。</p></div>
+          <div class="event-state"><span class="status pending">待实现</span></div>
+        </article>
+        <article class="event-row">
+          <div class="event-name">增益补给<small>FIELD BUFF</small></div>
+          <div class="event-copy"><p><b>1.0：</b>极速前进、事半功倍、免费补给有明确效果，例如额外移动/触发、奖励翻倍、获得银骰。</p><p><b>最新：</b>HUD 有“极速前进”展示，但没有完整增益状态和触发结算。</p><p><b>优化：</b>记录增益类型、剩余次数/持续条件，并在行动结果中显示是否触发和实际收益。</p></div>
+          <div class="event-state"><span class="status pending">待实现</span></div>
+        </article>
+        <article class="event-row">
+          <div class="event-name">资金争夺<small>FUND RAID</small></div>
+          <div class="event-copy"><p><b>1.0：</b>使用掠夺钥匙派出车队，每把钥匙对应联盟资金掠夺；钥匙有获取来源。</p><p><b>最新：</b>有选敌、选策略和胜负演示，但胜负不改资金/钥匙。</p><p><b>优化：</b>保留策略对抗作为体验增强，并接入钥匙消耗、资金变更和战报；明确平局与失败结算。</p></div>
+          <div class="event-state"><span class="status partial">战斗有，经济无</span></div>
+        </article>
+        <article class="event-row">
+          <div class="event-name">秘巷<small>SECRET ALLEY</small></div>
+          <div class="event-copy"><p><b>1.0：</b>两个入口、六格奖励和奖励概率说明。</p><p><b>最新：</b>已做信号提示、六格随机分配、局部导航及落点反馈；落入口改为自动进入，且没有通用物品库存。</p><p><b>优化：</b>先确认自动进入还是玩家选择；再确保奖励实际入账，并记录超出、领取和未领取格处理。</p></div>
+          <div class="event-state"><span class="status partial">流程部分完成</span></div>
+        </article>
+        <article class="event-row">
+          <div class="event-name">图腾 / 势力<small>TOTEM & POWER</small></div>
+          <div class="event-copy"><p><b>1.0：</b>经过/落点增加势力值，并累计解锁联盟阶段奖励。</p><p><b>最新：</b>显示势力增量和图腾占领结果，但没有完整三阶段势力奖励领取。</p><p><b>优化：</b>将图腾视觉争夺接回势力累计、阶段门槛与全盟奖励，不用占领状态替代奖励系统。</p></div>
+          <div class="event-state"><span class="status partial">进度有，领奖缺</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="activity-loop" class="block flow-section" aria-labelledby="loop-title">
+      <div class="section-head">
+        <span class="section-index">周期</span>
+        <div><h2 id="loop-title">把单局 Demo 接回六日活动</h2><p class="section-intro">以下是 1.0 已定义的活动结构；最新 Demo 尚未呈现这些阶段。</p></div>
+      </div>
+      <div class="flow-grid">
+        <article class="flow-step"><small>DAY 01</small><h3>报名</h3><p>校验个人与联盟资格，确认联盟参赛名单。</p></article>
+        <article class="flow-step"><small>DAY 02</small><h3>匹配</h3><p>按服务器阶段和联盟条件分区匹配，展示战区结果。</p></article>
+        <article class="flow-step"><small>DAY 03–05</small><h3>街区行动</h3><p>掷骰、触发格子事件、积累个人与联盟目标；支持自动投掷和联盟协作。</p></article>
+        <article class="flow-step"><small>DAY 06</small><h3>展示结算</h3><p>结算个人/联盟排行、阶段奖励与可分配奖励，回收活动期未用骰子。</p></article>
+      </div>
+    </section>
+
+    <section id="mobile" class="block" aria-labelledby="mobile-title">
+      <div class="section-head">
+        <span class="section-index">HUD</span>
+        <div><h2 id="mobile-title">从“桌面浮窗”转向手游操作层级</h2><p class="section-intro">当前已解决秘巷中的局部遮挡，但整体界面还需要以手机屏幕和拇指触达为出发点重排。</p></div>
+      </div>
+      <div class="mobile-direction">
+        <div><h3>视觉目标已明确，布局方案待审核</h3><p>不要把现有悬浮网页面板等比缩小。地图、行动骰、资源、事件结果应有明确主次；场景在行动时仍要可读，重要操作不应散落在屏幕四角。</p></div>
+        <ul class="mobile-list">
+          <li>顶部优先呈现关键资源和活动进度，压缩静态说明与重复标签。</li>
+          <li>骰子与主要行动放入拇指易达区域，并明确银骰、金骰和超级投掷的成本/状态。</li>
+          <li>事件处理采用移动端层级，完成选择后立即显示奖励、损失、增益或联盟状态变化。</li>
+          <li>秘巷详情按状态展开，确保奖励格、当前落点和行动控件不互相遮挡。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="priorities" class="block" aria-labelledby="priorities-title">
+      <div class="section-head">
+        <span class="section-index">优先级</span>
+        <div><h2 id="priorities-title">建议实施顺序</h2><p class="section-intro">先把规则和账本做真，再叠加体验表现；否则动画会包装一个无法验证的结果。</p></div>
+      </div>
+      <div class="roadmap">
+        <article class="priority"><span class="priority-tag">P0 · 规则闭环</span><h3>先确定哪些 1.0 规则必须保留</h3><p>统一事件映射、秘巷入口、骰子成本和奖励来源。补上 Demo 事件结算、资源账本与结果记录，并明确标注 Demo 临时规则。</p></article>
+        <article class="priority"><span class="priority-tag">P1 · 联盟活动</span><h3>接回个人与联盟目标</h3><p>实现联盟资金、势力阶段、协助请求、成员贡献、排行与阶段奖励；将活动报名、匹配和展示结算纳入完整周期。</p></article>
+        <article class="priority"><span class="priority-tag">P2 · 手游体验</span><h3>重做移动端 HUD 和场景反馈</h3><p>以触屏和单手操作重排主界面及事件面板。规则闭环稳定后，再打磨卡面轮换、警戒阶段、动画和音效。</p></article>
+      </div>
+    </section>
+
+    <section id="risks" class="block" aria-labelledby="risks-title">
+      <div class="section-head">
+        <span class="section-index">校验</span>
+        <div><h2 id="risks-title">规则差异与未决风险</h2><p class="section-intro">这些差异应先定口径，再进入正式实现和数值验收。</p></div>
+      </div>
+      <ul class="risk-list">
+        <li><b>地图分布：</b>Demo 的 13 个随机事件格和五类轮换，不等于地图 PDF 中的多类型格子配置。</li>
+        <li><b>骰子经济：</b>界面写有银骰自然恢复，但 Demo 没有计时恢复；金骰也没有库存和消耗账本。</li>
+        <li><b>秘巷入口：</b>1.0 的入口交互与 Demo 的自动进入不一致，需确定采用哪套规则。</li>
+        <li><b>奖励账本：</b>秘巷有领取展示和行动记录，但通用奖励物品没有统一库存状态。</li>
+        <li><b>警戒阶段：</b>代码定义四种阶段，规则速览写“逐圈升至三级”，阶段数口径不一致。</li>
+        <li><b>神行顺序：</b>《街区争霸地图.pdf》第 1 页记录参数 7=10 时同一时间可能出现两条数据，顺序可能颠倒；最新 Demo 尚未覆盖神行规则。</li>
+      </ul>
+    </section>
+
+    <div class="closing"><p>最终方向：保留 1.0 的联盟大富翁骨架，以失联街区强化探索叙事；每个落点都要有真实处理、明确结算和可追踪结果，再用手游 HUD 将它们连成一段顺手、可信的活动体验。</p></div>
+
+    <section id="sources" class="block" aria-labelledby="sources-title">
+      <div class="section-head">
+        <span class="section-index">来源</span>
+        <div><h2 id="sources-title">对照依据</h2><p class="section-intro">规则判断来自原始活动文档和当前 Demo；未接入正式配置的内容均按“未验证/待确认”处理。</p></div>
+      </div>
+      <div class="sources">
+        <article class="source"><small>基线 / 活动规则与奖励</small><a href="./大富翁1.0.docx">大富翁1.0.docx</a><p>活动简介、六日周期、报名/匹配、事件效果、联盟玩法和奖励投放截图。</p></article>
+        <article class="source"><small>基线 / 地图与参数</small><a href="./街区争霸地图.pdf">街区争霸地图.pdf</a><p>地图格子类型、格子参数、秘巷格子与已记录的数据顺序问题。</p></article>
+        <article class="source"><small>当前 / 交互原型</small><a href="./lost-district-encounter-card-demo.html">lost-district-encounter-card-demo.html</a><p>场景卡、线索、骰子、秘巷、警戒和事件处理的当前实现。</p></article>
+        <article class="source"><small>设计 / 体验规格</small><a href="./docs/superpowers/specs/2026-10-18-encounter-card-experience-design.md">遭遇卡体验与秘巷 HUD 规格</a><p>此前已批准的表现和避遮挡方向；事件闭环与手游 HUD 需据当前反馈更新。</p></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">DLS 活动策划对照稿 · 2026-10-18 · 预期效果不是测试结论；Demo 规则不代表正式 1.0 配置</footer>
+</body>
+</html>
